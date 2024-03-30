@@ -1,5 +1,4 @@
 import React from "react";
-import FormRow from "./FormRow";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -8,6 +7,9 @@ import {
   clearValues,
   updateCard,
 } from "../feachers/card/cardSlice";
+import Col from "react-bootstrap/Col";
+import FormBootstrap from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
 const EditForm = ({ cardId, setEditing, singleCard }) => {
   const { cardName, bank, creditLine, balance } = useSelector(
@@ -26,33 +28,50 @@ const EditForm = ({ cardId, setEditing, singleCard }) => {
   return (
     <>
       <h3>Edit Credit Cart</h3>
-      <FormRow
-        type="text"
-        name="bank"
-        value={bank}
-        handleChange={handleCardInput}
-      />
-      <FormRow
-        type="text"
-        name="cardName"
-        value={cardName}
-        handleChange={handleCardInput}
-        labelText="Card Name"
-      />
-
-      <FormRow
-        type="number"
-        name="creditLine"
-        value={creditLine}
-        handleChange={handleCardInput}
-        labelText="Credit Line"
-      />
-      <FormRow
-        type="number"
-        name="balance"
-        value={balance}
-        handleChange={handleCardInput}
-      />
+      <FormBootstrap>
+        <Row className="mb-3">
+          <Col>
+            <FormBootstrap.Label>Bank</FormBootstrap.Label>
+            <FormBootstrap.Control
+              placeholder="Bank"
+              name="bank"
+              value={bank}
+              onChange={(e) => handleCardInput(e)}
+            />
+          </Col>
+          <Col>
+            <FormBootstrap.Label>Card Name</FormBootstrap.Label>
+            <FormBootstrap.Control
+              placeholder="Card Name"
+              name="cardName"
+              value={cardName}
+              onChange={(e) => handleCardInput(e)}
+            />
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col>
+            <FormBootstrap.Label>Credit Line</FormBootstrap.Label>
+            <FormBootstrap.Control
+              type="number"
+              name="creditLine"
+              value={creditLine}
+              placeholder="Credit Line"
+              onChange={(e) => handleCardInput(e)}
+            />
+          </Col>
+          <Col>
+            <FormBootstrap.Label>Balance</FormBootstrap.Label>
+            <FormBootstrap.Control
+              type="number"
+              placeholder="Balance"
+              name="balance"
+              value={balance}
+              onChange={(e) => handleCardInput(e)}
+            />
+          </Col>
+        </Row>
+      </FormBootstrap>
       <button
         type="button"
         onClick={() => {
@@ -72,14 +91,6 @@ const EditForm = ({ cardId, setEditing, singleCard }) => {
         }}
       >
         Update card
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          dispatch(clearValues());
-        }}
-      >
-        Clear inputs
       </button>
     </>
   );

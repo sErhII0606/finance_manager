@@ -27,7 +27,7 @@ const SingleCard = () => {
   }
   return (
     <div>
-      <CardInfo singleCard={singleCard} />
+      <CardInfo singleCard={singleCard} isLoading={isLoading} />
       <NeedleChart creditLine={creditLine} value={balance} />
     </div>
   );

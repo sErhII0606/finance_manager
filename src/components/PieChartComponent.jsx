@@ -19,7 +19,7 @@ const PieChartComponent = () => {
       id: card.cardId,
       name: card.cardName,
       balance: card.balance,
-      credit: card.creditLine - card.balance,
+      availableCredit: card.creditLine - card.balance,
     };
   });
   if (isLoading) return <Spinner />;
@@ -28,7 +28,7 @@ const PieChartComponent = () => {
       <>
         <BarChart
           id="d"
-          width={1300}
+          width={800}
           height={400}
           data={data}
           margin={{
@@ -50,7 +50,7 @@ const PieChartComponent = () => {
           <Tooltip />
           <Legend />
           <Bar dataKey="balance" stackId="a" fill="#ef0a0a" />
-          <Bar dataKey="credit" stackId="a" fill="#26f706" />
+          <Bar dataKey="availableCredit" stackId="a" fill="#26f706" />
         </BarChart>
       </>
     );

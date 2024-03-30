@@ -14,6 +14,7 @@ import Landing from "./pages/Landing";
 import Register from "./pages/Register";
 import CreditCards from "./pages/CreditCards";
 import SingleCard from "./pages/SingleCard";
+import SingleTransaction from "./pages/SingleTransaction";
 
 function App() {
   return (
@@ -29,6 +30,10 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="transactions" element={<Transactions />} />
+          <Route
+            path="transaction/:transactionId/info"
+            element={<SingleTransaction />}
+          />
           <Route path="creditCards" element={<CreditCards />} />
           <Route path="card/:cardId/info" element={<SingleCard />} />
         </Route>

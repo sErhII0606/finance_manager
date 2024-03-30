@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import FormRow from "../components/FormRow";
+//import FormRow from "../components/FormRow";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser, registerUser } from "../feachers/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
 
 const initialState = {
   nickname: "",
@@ -55,30 +58,52 @@ const Register = () => {
   }, [user]);
   return (
     <div>
-      <form className="form" onSubmit={onSubmit}>
+      <Form className="form" onSubmit={onSubmit}>
         <h3>{values.isMember ? "Login" : "Register"}</h3>
-
         {!values.isMember && (
-          <FormRow
-            type="text"
-            name="nickname"
-            value={values.nickname}
-            handleChange={handleChange}
-          />
+          <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+            <Form.Label column sm={2}>
+              Nickname
+            </Form.Label>
+            <Col sm={10}>
+              <Form.Control
+                type="text"
+                name="nickname"
+                value={values.nickname}
+                placeholder="nickname"
+                onChange={(e) => handleChange(e)}
+              />
+            </Col>
+          </Form.Group>
         )}
-        <FormRow
-          type="email"
-          name="email"
-          value={values.email}
-          handleChange={handleChange}
-        />
-        <FormRow
-          type="password"
-          name="password"
-          value={values.password}
-          handleChange={handleChange}
-        />
-
+        <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+          <Form.Label column sm={2}>
+            Email
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              type="email"
+              name="email"
+              value={values.email}
+              placeholder="Email"
+              onChange={(e) => handleChange(e)}
+            />
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+          <Form.Label column sm={2}>
+            Password
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              type="password"
+              name="password"
+              value={values.password}
+              placeholder="password"
+              onChange={(e) => handleChange(e)}
+            />
+          </Col>
+        </Form.Group>
         <button type="submit" className="member-btn" disabled={isLoading}>
           {isLoading ? "loading..." : "Submit"}
         </button>
@@ -87,8 +112,8 @@ const Register = () => {
           <button type="button" onClick={toggleMember} className="member-btn">
             {values.isMember ? "Register" : "Login"}
           </button>
-        </p>
-      </form>
+        </p>{" "}
+      </Form>
       <Link to="/landing" className="btn btn-hero">
         <button className="member-btn">Go Back</button>
       </Link>
