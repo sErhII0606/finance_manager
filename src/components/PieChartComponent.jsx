@@ -11,7 +11,19 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import useDeviceSize from "../util/useDeviceSize";
 const PieChartComponent = () => {
+  const [width, height] = useDeviceSize();
+  let chartWidth = 0;
+  if (width <= 840) {
+    chartWidth = width / 1.5;
+  }
+  if (width > 840 && width < 1500) {
+    chartWidth = width / 1.8;
+  }
+  if (width > 1500) {
+    chartWidth = width / 2.3;
+  }
   const { cards, isLoading } = useSelector((store) => store.card);
   const dispatcher = useDispatch();
   let data = cards.map((card) => {
@@ -28,7 +40,7 @@ const PieChartComponent = () => {
       <>
         <BarChart
           id="d"
-          width={800}
+          width={chartWidth}
           height={400}
           data={data}
           margin={{

@@ -45,26 +45,40 @@ const NeedleChart = ({ value, creditLine }) => {
   data.forEach((v) => {
     total += v.value;
   });
+  const title = (val, cl) => {
+    if (val <= cl / 2) {
+      return "Good";
+    }
+    if (val > cl / 2 && val < (cl * 3) / 4) {
+      return "Fair";
+    }
+    if (val > (cl * 3) / 4) {
+      return "Not Good";
+    }
+  };
   return (
-    <PieChart width={400} height={210}>
-      <Pie
-        dataKey="value"
-        startAngle={180}
-        endAngle={0}
-        data={data}
-        cx={cx}
-        cy={cy}
-        innerRadius={iR}
-        outerRadius={oR}
-        fill="#070443"
-        stroke="none"
-      >
-        {data.map((entry, index) => (
-          <Cell key={index} fill={entry.color} />
-        ))}
-      </Pie>
-      {needle(value, total, cx, cy, iR, oR, "#d0d000")}
-    </PieChart>
+    <div>
+      <h3>{title(value, creditLine)}</h3>
+      <PieChart width={400} height={210}>
+        <Pie
+          dataKey="value"
+          startAngle={180}
+          endAngle={0}
+          data={data}
+          cx={cx}
+          cy={cy}
+          innerRadius={iR}
+          outerRadius={oR}
+          fill="#070443"
+          stroke="none"
+        >
+          {data.map((entry, index) => (
+            <Cell key={index} fill={entry.color} />
+          ))}
+        </Pie>
+        {needle(value, total, cx, cy, iR, oR, "#d0d000")}
+      </PieChart>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ const Wrapper = styled.section`
     .form-display {
       display: grid;
 
-      grid-template-columns: 30% 70%;
+      grid-template-columns: 1fr 1fr;
       gap: 1rem;
       padding: 70px;
     }

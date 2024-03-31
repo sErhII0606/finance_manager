@@ -26,7 +26,7 @@ const EditForm = ({ cardId, setEditing, singleCard }) => {
     dispatch(handleChange({ name, value }));
   };
   return (
-    <>
+    <div>
       <h3>Edit Credit Cart</h3>
       <FormBootstrap>
         <Row className="mb-3">
@@ -92,7 +92,7 @@ const EditForm = ({ cardId, setEditing, singleCard }) => {
       >
         Update card
       </button>
-    </>
+    </div>
   );
 };
 

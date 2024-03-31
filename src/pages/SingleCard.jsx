@@ -9,7 +9,10 @@ import {
 import { Spinner } from "react-bootstrap";
 import CardInfo from "../components/CardInfo";
 import NeedleChart from "../components/NeedleChart";
+import Wrapper from "../wrappers/SingleCardWrapper";
+import EditForm from "../components/EditForm";
 const SingleCard = () => {
+  const [editing, setEditing] = React.useState(false);
   const dispatch = useDispatch();
   const { cardId } = useParams();
   const { singleCard, isLoading, deletedId } = useSelector(
@@ -26,10 +29,26 @@ const SingleCard = () => {
     return <Navigate to="/creditCards" />;
   }
   return (
-    <div>
-      <CardInfo singleCard={singleCard} isLoading={isLoading} />
-      <NeedleChart creditLine={creditLine} value={balance} />
-    </div>
+    <Wrapper>
+      <div className="form-display">
+        <CardInfo
+          singleCard={singleCard}
+          isLoading={isLoading}
+          setEditing={setEditing}
+          editing={editing}
+        />
+
+        {editing ? (
+          <EditForm
+            cardId={cardId}
+            setEditing={setEditing}
+            singleCard={singleCard}
+          />
+        ) : (
+          <NeedleChart creditLine={creditLine} value={balance} />
+        )}
+      </div>
+    </Wrapper>
   );
 };
 

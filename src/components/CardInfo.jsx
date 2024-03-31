@@ -5,8 +5,8 @@ import { deleteCard } from "../feachers/card/cardSlice";
 import EditForm from "./EditForm";
 import { Spinner } from "react-bootstrap";
 
-const CardInfo = ({ singleCard, isLoading }) => {
-  const [editing, setEditing] = React.useState(false);
+const CardInfo = ({ singleCard, isLoading, setEditing, editing }) => {
+  //const [editing, setEditing] = React.useState(false);
   const { bank, cardName, creditLine, balance, cardId } = singleCard;
   const dispatch = useDispatch();
   if (isLoading) return <Spinner />;
@@ -21,15 +21,15 @@ const CardInfo = ({ singleCard, isLoading }) => {
         Delete
       </button>
       <button type="button" onClick={() => setEditing(!editing)}>
-        Edit
+        {editing ? "Cancel Edit" : "Edit"}
       </button>
-      {editing && (
+      {/*  {editing && (
         <EditForm
           cardId={cardId}
           setEditing={setEditing}
           singleCard={singleCard}
         />
-      )}
+      )} */}
     </div>
   );
 };
