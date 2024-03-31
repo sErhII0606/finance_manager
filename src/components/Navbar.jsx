@@ -16,7 +16,13 @@ const Navbar = () => {
     <NavbarBootstrap bg="primary" data-bs-theme="dark">
       <Container>
         {width < 900 ? (
-          <NavbarBootstrap.Brand>NavbarBootstrap</NavbarBootstrap.Brand>
+          <NavbarBootstrap.Brand
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            NavbarBootstrap
+          </NavbarBootstrap.Brand>
         ) : (
           <>
             <NavbarBootstrap.Brand>NavbarBootstrap</NavbarBootstrap.Brand>
