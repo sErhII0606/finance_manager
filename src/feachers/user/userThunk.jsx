@@ -1,6 +1,7 @@
 import { authHeader } from "../../util/authHeader";
 import customFetch from "../../util/axios";
 import { clearValues } from "../card/cardSlice";
+import { clearValuesTransactions } from "../transactions/tansactionsSlice";
 import { loginUser, logout } from "./userSlice";
 export const registerUserThunk = async (user, thunkAPI) => {
   try {
@@ -45,6 +46,7 @@ export const clearStoreThunk = async (msg, thunkAPI) => {
   try {
     thunkAPI.dispatch(logout(msg));
     thunkAPI.dispatch(clearValues());
+    thunkAPI.dispatch(clearValuesTransactions());
     return Promise.resolve();
   } catch (error) {
     return Promise.reject();

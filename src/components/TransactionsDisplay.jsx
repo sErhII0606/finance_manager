@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserTransactions } from "../feachers/transactions/tansactionsSlice";
 import { useNavigate } from "react-router-dom";
+import Transactions from "./Transactions";
 
 const TransactionsDisplay = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const TransactionsDisplay = () => {
   return (
     <div>
       <h3>TransactionsDisplay</h3>
-      {sortedTransactions
+      {/*       {sortedTransactions
         .sort((a, b) => a.createdAt - b.createdAt)
         .map((t, i) => {
           const event = new Date(t.createdAt);
@@ -40,7 +41,8 @@ const TransactionsDisplay = () => {
               </button>
             </div>
           );
-        })}
+        })} */}
+      <Transactions transactions={sortedTransactions} />
     </div>
   );
 };

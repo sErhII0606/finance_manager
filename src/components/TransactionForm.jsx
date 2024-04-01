@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addNewTransaction,
   handleChange,
-  clearValues,
+  clearValuesTransactions,
   setBank,
   setInfo,
   setImg,
@@ -205,7 +205,7 @@ const TransactionForm = () => {
             dispatch(updateCard({ ...card, balance: +card.balance + +amount }));
           }
           dispatch(addNewTransaction({ cardId, info, amount, userId, img }));
-          dispatch(clearValues());
+          dispatch(clearValuesTransactions());
         }}
       >
         Submit

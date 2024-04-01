@@ -50,7 +50,7 @@ const transactionSlice = createSlice({
     handleChange: (state, { payload: { name, value } }) => {
       state[name] = value;
     },
-    clearValues: (state) => {
+    clearValuesTransactions: (state) => {
       return {
         ...initialState,
       };
@@ -144,7 +144,7 @@ export const {
   handleChange,
   setBank,
   setCardName,
-  clearValues,
+  clearValuesTransactions,
   setImg,
   setInfo,
   setCardId,
