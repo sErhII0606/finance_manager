@@ -1,11 +1,13 @@
 import { authHeader } from "../../util/authHeader";
 import customFetch from "../../util/axios";
 import { clearValues } from "../card/cardSlice";
-import { logout } from "./userSlice";
+import { loginUser, logout } from "./userSlice";
 export const registerUserThunk = async (user, thunkAPI) => {
   try {
     const resp = await customFetch.post("/user/register", user);
-    console.log(resp);
+    thunkAPI.dispatch(
+      loginUser({ email: resp.data.email, password: resp.data.password })
+    );
     return resp.data;
   } catch (error) {
     //  toast.error(error.response.data.msg);

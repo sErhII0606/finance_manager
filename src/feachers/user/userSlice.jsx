@@ -32,6 +32,7 @@ const userSlice = createSlice({
       state.user = null;
       removeDataFromLocalStorage("user");
       removeDataFromLocalStorage("cards");
+      removeDataFromLocalStorage("transactions");
       toast.warn(payload);
     },
   },
@@ -41,25 +42,25 @@ const userSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
-        const user = payload;
-        state.isLoading = false;
+        //const user = payload;
+        state.isLoading = false; /* 
         state.user = {
           nickname: user.nickname,
           email: user.email,
           userId: user.Value, //AccessToken
-          refreshToken: user.AuthenticationResult.RefreshToken,
-          idToken: user.AuthenticationResult.IdToken,
-          accessToken: user.AuthenticationResult.AccessToken,
+          // refreshToken: user.AuthenticationResult.RefreshToken,
+          // idToken: user.AuthenticationResult.IdToken,
+          // accessToken: user.AuthenticationResult.AccessToken,
         };
         addDataToLocalStorage("user", {
           nickname: user.nickname,
           email: user.email,
           userId: user.Value, //AccessToken
-          refreshToken: user.AuthenticationResult.RefreshToken,
-          idToken: user.AuthenticationResult.IdToken,
-          accessToken: user.AuthenticationResult.AccessToken,
+          // refreshToken: user.AuthenticationResult.RefreshToken,
+          // idToken: user.AuthenticationResult.IdToken,
+          // accessToken: user.AuthenticationResult.AccessToken,
         });
-        toast.success(`Hello there ${user.nickname}`);
+        toast.success(`Hello there ${user.nickname}`); */
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false;
