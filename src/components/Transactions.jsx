@@ -1,11 +1,12 @@
 import Badge from "react-bootstrap/Badge";
 import ListGroup from "react-bootstrap/ListGroup";
-
+import { Link } from "react-router-dom";
+import { Image } from "react-bootstrap";
 const Transactions = ({ transactions }) => {
   return (
-    <ListGroup as="ol">
+    <ListGroup as="ol" style={{ overflow: "auto", height: "500px" }}>
       {transactions
-        .sort((a, b) => a.createdAt - b.createdAt)
+        .sort((a, b) => b.createdAt - a.createdAt)
         .map((t, i) => {
           const event = new Date(t.createdAt);
           return (
@@ -13,19 +14,21 @@ const Transactions = ({ transactions }) => {
               key={i}
               as="li"
               className="d-flex justify-content-between align-items-start"
-              style={{ width: "25rem" }}
+              style={{
+                width: "50% ",
+                margin: "auto",
+                padding: "10px",
+                alignItems: "center",
+              }}
             >
               <div className="ms-2 me-auto">
-                <img
-                  src={t.img}
-                  style={{ height: "25px", position: "absolute", left: "0" }}
-                />
-                <div className="fw-bold">
+                <Link to={`/transaction/${t.transactionId}/info`}>
                   {" "}
                   {t.info ? `${t.info}` : `transaction`}
-                </div>
-                {event.toDateString()}
+                </Link>
+                <p> {event.toDateString()}</p>
               </div>
+              <Image roundedCircle src={t.img} className="icon-img" />{" "}
               <Badge bg="primary" pill>
                 {`$${t.amount}`}
               </Badge>

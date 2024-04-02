@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { PieChart, Pie, Cell } from "recharts";
+import useDeviceSize from "../util/useDeviceSize";
 
 const RADIAN = Math.PI / 180;
 
@@ -41,6 +42,7 @@ const NeedleChart = ({ value, creditLine }) => {
     { name: "B", value: creditLine / 4, color: "#f46b09" },
     { name: "C", value: creditLine / 4, color: "#f80909" },
   ];
+  const [width, height] = useDeviceSize();
   let total = 0;
   data.forEach((v) => {
     total += v.value;
@@ -59,7 +61,16 @@ const NeedleChart = ({ value, creditLine }) => {
   return (
     <div>
       <h3>{title(value, creditLine)}</h3>
-      <PieChart width={400} height={210}>
+      <PieChart
+        style={{
+          width: "50% ",
+          margin: "auto",
+          padding: "10px",
+          alignItems: "center",
+        }}
+        width={400}
+        height={210}
+      >
         <Pie
           dataKey="value"
           startAngle={180}

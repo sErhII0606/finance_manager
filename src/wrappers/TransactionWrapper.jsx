@@ -2,7 +2,12 @@ import styled from "styled-components";
 
 const Wrapper = styled.section`
   .form-display {
-    align-items: center;
+    // align-items: center;
+  }
+  .icon-img {
+    height: 45px;
+    width: 65px;
+    margin: auto;
   }
   @media (min-width: 992px) {
     .form-display {

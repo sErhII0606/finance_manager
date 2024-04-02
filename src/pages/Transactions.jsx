@@ -7,7 +7,7 @@ const Transactions = () => {
   return (
     <Wrapper>
       <div className="form-display">
-        <div>
+        <div className="add-transaction-form">
           <h1>Add a Transaction</h1>
           <TransactionForm />
         </div>

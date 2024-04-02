@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const Wrapper = styled.section`
   .form-display {
-    align-items: center;
   }
   @media (min-width: 840px) {
     .form-display {

@@ -22,26 +22,7 @@ const TransactionsDisplay = () => {
   return (
     <div>
       <h3>TransactionsDisplay</h3>
-      {/*       {sortedTransactions
-        .sort((a, b) => a.createdAt - b.createdAt)
-        .map((t, i) => {
-          const event = new Date(t.createdAt);
-          return (
-            <div key={i}>
-              <button
-                type="button"
-                onClick={() => {
-                  console.log(t);
-                  navigate(`/transaction/${t.transactionId}/info`);
-                }}
-              >
-                {t.info
-                  ? `${t.info}--${event.toDateString()}`
-                  : `transaction--${event.toDateString()}`}
-              </button>
-            </div>
-          );
-        })} */}
+
       <Transactions transactions={sortedTransactions} />
     </div>
   );
