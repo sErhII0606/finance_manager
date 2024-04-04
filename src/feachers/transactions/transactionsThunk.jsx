@@ -54,3 +54,16 @@ export const deleteTransactionThunk = async (transactionId, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.response.data.msg);
   }
 };
+
+export const getTransactionsByCardThunk = async (cardId, thunkAPI) => {
+  try {
+    const resp = await customFetch.get(
+      `/transactions/sortingTransactionsByCard?cardId=${cardId}`,
+      authHeader(thunkAPI)
+    );
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};

@@ -9,10 +9,12 @@ import {
   getUserTransactionsThunk,
   getTransactionByIdThunk,
   deleteTransactionThunk,
+  getTransactionsByCardThunk,
 } from "./transactionsThunk";
 import { toast } from "react-toastify";
 const initialState = {
   transactions: getDataFromLocalStorage("transactions", []),
+  transactionByCard: [],
   deletedId: "",
   singleTransaction: {},
   transactionId: "",
@@ -29,6 +31,11 @@ const initialState = {
 export const addNewTransaction = createAsyncThunk(
   "transaction/addNewTransaction",
   addNewTransactionThunk
+);
+
+export const getTransactionsByCard = createAsyncThunk(
+  "transaction/getTransactionsByCard",
+  getTransactionsByCardThunk
 );
 export const deleteTransaction = createAsyncThunk(
   "transaction/deleteTransaction",
@@ -114,6 +121,18 @@ const transactionSlice = createSlice({
         //console.log(payload);
       })
       .addCase(getTransactionById.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(getTransactionsByCard.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTransactionsByCard.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.transactionByCard = payload.Items;
+        //console.log(payload);
+      })
+      .addCase(getTransactionsByCard.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       })

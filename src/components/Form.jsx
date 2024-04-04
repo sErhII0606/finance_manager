@@ -10,7 +10,7 @@ import Col from "react-bootstrap/Col";
 import FormBootstrap from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
-const Form = () => {
+const Form = ({ setAddNewCard }) => {
   const { cardName, bank, creditLine, balance, isLoading } = useSelector(
     (store) => store.card
   );
@@ -72,6 +72,14 @@ const Form = () => {
       </FormBootstrap>
       <button
         type="button"
+        onClick={() => {
+          setAddNewCard(false);
+        }}
+      >
+        Return
+      </button>
+      <button
+        type="button"
         disabled={isLoading}
         onClick={() => {
           if (!bank || creditLine <= 0 || balance < 0) {
@@ -83,7 +91,7 @@ const Form = () => {
           dispatch(clearValues());
         }}
       >
-        Add new card
+        Submit
       </button>
       <button
         type="button"

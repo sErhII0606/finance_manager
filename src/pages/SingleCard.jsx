@@ -11,6 +11,9 @@ import CardInfo from "../components/CardInfo";
 import NeedleChart from "../components/NeedleChart";
 import Wrapper from "../wrappers/SingleCardWrapper";
 import EditForm from "../components/EditForm";
+import Transactions from "../components/Transactions";
+import { getTransactionsByCard } from "../feachers/transactions/tansactionsSlice";
+import TransactionsDisplay from "../components/TransactionsDisplay";
 const SingleCard = () => {
   const [editing, setEditing] = React.useState(false);
   const dispatch = useDispatch();
@@ -19,8 +22,12 @@ const SingleCard = () => {
     (store) => store.card
   );
   const { bank, cardName, creditLine, balance } = singleCard;
+  const { transactionByCard } = useSelector((store) => store.transaction);
+  //console.log(transactionByCard);
+  const transactions = [...transactionByCard];
   React.useEffect(() => {
     dispatch(getCardById(cardId));
+    dispatch(getTransactionsByCard(cardId));
   }, []);
   if (isLoading) {
     return <Spinner />;
@@ -31,22 +38,27 @@ const SingleCard = () => {
   return (
     <Wrapper>
       <div className="form-display">
-        <CardInfo
-          singleCard={singleCard}
-          isLoading={isLoading}
-          setEditing={setEditing}
-          editing={editing}
-        />
-
-        {editing ? (
-          <EditForm
-            cardId={cardId}
-            setEditing={setEditing}
+        <div>
+          <CardInfo
             singleCard={singleCard}
+            isLoading={isLoading}
+            setEditing={setEditing}
+            editing={editing}
           />
-        ) : (
-          <NeedleChart creditLine={creditLine} value={balance} />
-        )}
+
+          {editing ? (
+            <EditForm
+              cardId={cardId}
+              setEditing={setEditing}
+              singleCard={singleCard}
+            />
+          ) : (
+            <NeedleChart creditLine={creditLine} value={balance} />
+          )}
+        </div>
+        <div>
+          <TransactionsDisplay transactions={transactions} />
+        </div>
       </div>
     </Wrapper>
   );
