@@ -3,13 +3,14 @@ import Container from "react-bootstrap/Container";
 import NavbarBootstrap from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearStore, logout } from "../feachers/user/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import useDeviceSize from "../util/useDeviceSize";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { isLoading } = useSelector((store) => store.user);
 
   const [width, height] = useDeviceSize();
   return (
@@ -50,6 +51,7 @@ const Navbar = () => {
               </Nav.Link>
               <Button
                 variant="danger"
+                disabled={isLoading}
                 onClick={() => dispatch(clearStore("bye"))}
               >
                 Logout

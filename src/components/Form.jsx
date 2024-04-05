@@ -95,6 +95,7 @@ const Form = ({ setAddNewCard }) => {
       </button>
       <button
         type="button"
+        disabled={isLoading}
         onClick={() => {
           dispatch(clearValues());
         }}

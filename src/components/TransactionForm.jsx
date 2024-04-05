@@ -16,6 +16,7 @@ import {
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { updateCard } from "../feachers/card/cardSlice";
+import { updateUserCashBalance } from "../feachers/user/userSlice";
 
 const TransactionForm = () => {
   const infoArray = [
@@ -93,12 +94,13 @@ const TransactionForm = () => {
     },
   ];
   const [customInfo, setCustomInfo] = useState(false);
-  const { info, cardId, amount, img } = useSelector(
+  const { info, cardId, amount, img, isLoading } = useSelector(
     (store) => store.transaction
   );
   const { user } = useSelector((store) => store.user);
   const { cards } = useSelector((store) => store.card);
-  const { userId } = user;
+  const { userId, cashBalance } = user;
+  console.log(cashBalance);
   const dispatch = useDispatch();
   const handleCardInput = (e) => {
     const name = e.target.name;
@@ -192,6 +194,7 @@ const TransactionForm = () => {
       <button
         variant="primary"
         type="submit"
+        disabled={isLoading}
         onClick={(e) => {
           e.preventDefault();
           // console.log({ cardName, bank, info, amount, userId, img });
@@ -199,7 +202,11 @@ const TransactionForm = () => {
             toast.warn("Please fill out all fields");
             return;
           }
-          if (cardId !== "CASH") {
+          if (cardId === "CASH") {
+            dispatch(
+              updateUserCashBalance({ userId, balance: +cashBalance - +amount })
+            );
+          } else {
             const card = cards.find((c) => c.cardId === cardId);
             //console.log({ ...card, balance: +card.balance + +amount });
             dispatch(updateCard({ ...card, balance: +card.balance + +amount }));

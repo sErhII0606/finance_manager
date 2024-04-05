@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import CreditCards from "./pages/CreditCards";
 import SingleCard from "./pages/SingleCard";
 import SingleTransaction from "./pages/SingleTransaction";
+import CashBalance from "./pages/CashBalance";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="creditCards" element={<CreditCards />} />
           <Route path="card/:cardId/info" element={<SingleCard />} />
         </Route>
+        <Route path="user/cashBalance" element={<CashBalance />} />
 
         <Route path="landing" element={<Landing />} />
         <Route path="register" element={<Register />} />

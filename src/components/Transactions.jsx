@@ -15,7 +15,7 @@ const Transactions = ({ transactions }) => {
               as="li"
               className="d-flex justify-content-between align-items-start"
               style={{
-                width: "50% ",
+                width: "300px",
                 marginLeft: "auto",
                 marginRight: "auto",
                 padding: "10px",

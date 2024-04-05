@@ -11,6 +11,9 @@ import {
   registerUserThunk,
   updateUserThunk,
   clearStoreThunk,
+  addUserCashBalanceThunk,
+  updateUserCashBalanceThunk,
+  getUserCashBalanceThunk,
 } from "./userThunk";
 const initialState = {
   isLoading: false,
@@ -22,10 +25,23 @@ export const registerUser = createAsyncThunk(
   registerUserThunk
 );
 export const loginUser = createAsyncThunk("user/loginUser", loginUserThunk);
-
 export const clearStore = createAsyncThunk("user/clearStore", clearStoreThunk);
+export const addUserCashBalance = createAsyncThunk(
+  "user/addUserCashBalance",
+  addUserCashBalanceThunk
+);
+export const updateUserCashBalance = createAsyncThunk(
+  "user/updateUserCashBalance",
+  updateUserCashBalanceThunk
+);
+export const getUserCashBalance = createAsyncThunk(
+  "user/getUserCashBalance",
+  getUserCashBalanceThunk
+);
+
 const userSlice = createSlice({
   name: "user",
+  balance: 0,
   initialState,
   reducers: {
     logout: (state, { payload }) => {
@@ -34,6 +50,9 @@ const userSlice = createSlice({
       removeDataFromLocalStorage("cards");
       removeDataFromLocalStorage("transactions");
       toast.warn(payload);
+    },
+    setBalance: (state, { payload }) => {
+      state.balance = payload;
     },
   },
   extraReducers: (builder) => {
@@ -95,10 +114,60 @@ const userSlice = createSlice({
 
         toast.error(payload);
       })
+      .addCase(addUserCashBalance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addUserCashBalance.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        console.log(payload);
+        state.user.cashBalance = payload.balance;
+        addDataToLocalStorage("user", {
+          ...getDataFromLocalStorage("user", null),
+          cashBalance: payload.balance,
+        });
+      })
+      .addCase(addUserCashBalance.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(getUserCashBalance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserCashBalance.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        if (payload) {
+          state.user.cashBalance = payload.balance;
+
+          addDataToLocalStorage("user", {
+            ...getDataFromLocalStorage("user", null),
+            cashBalance: payload.balance,
+          });
+        }
+      })
+      .addCase(getUserCashBalance.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(updateUserCashBalance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserCashBalance.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user.cashBalance = payload.balance;
+
+        addDataToLocalStorage("user", {
+          ...getDataFromLocalStorage("user", null),
+          cashBalance: payload.balance,
+        });
+      })
+      .addCase(updateUserCashBalance.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
       .addCase(clearStore.rejected, () => {
         toast.error("ERROR");
       });
   },
 });
-export const { logout } = userSlice.actions;
+export const { logout, setBalance } = userSlice.actions;
 export default userSlice.reducer;

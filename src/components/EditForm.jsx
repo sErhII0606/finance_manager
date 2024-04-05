@@ -12,7 +12,7 @@ import FormBootstrap from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 
 const EditForm = ({ cardId, setEditing, singleCard }) => {
-  const { cardName, bank, creditLine, balance } = useSelector(
+  const { cardName, bank, creditLine, balance, isLoading } = useSelector(
     (store) => store.card
   );
   console.log(singleCard);
@@ -74,6 +74,7 @@ const EditForm = ({ cardId, setEditing, singleCard }) => {
       </FormBootstrap>
       <button
         type="button"
+        disabled={isLoading}
         onClick={() => {
           setEditing(false);
 

@@ -31,13 +31,15 @@ const CreditCards = () => {
             ) : (
               <div>
                 <AllCardsInfo />
-                <button
-                  className="add-new-card-btn"
-                  type="button"
-                  onClick={handleAddNewCard}
-                >
-                  <VscAdd onClick={handleAddNewCard} />
-                </button>
+                <div>
+                  <button
+                    className="add-new-card-btn"
+                    type="button"
+                    onClick={handleAddNewCard}
+                  >
+                    <VscAdd onClick={handleAddNewCard} />
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -62,10 +64,11 @@ const CreditCards = () => {
             <div className="add-new-card-btn-container">
               {" "}
               <AllCardsInfo />
-              <h5>Add new Card</h5>
-              <button type="button" onClick={handleAddNewCard}>
-                <VscAdd onClick={handleAddNewCard} />
-              </button>
+              <div>
+                <button type="button" onClick={handleAddNewCard}>
+                  Add new Card
+                </button>
+              </div>{" "}
             </div>
           )}
           <PieChartComponent />
