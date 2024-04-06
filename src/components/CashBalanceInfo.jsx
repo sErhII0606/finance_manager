@@ -22,6 +22,7 @@ const CashBalanceInfo = () => {
               </Col>
               <Col>
                 <Form.Control
+                  type="number"
                   placeholder="Amount"
                   onChange={(e) => setAmount(e.target.value)}
                 />
