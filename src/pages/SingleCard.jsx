@@ -21,13 +21,15 @@ const SingleCard = () => {
   const { singleCard, isLoading, deletedId } = useSelector(
     (store) => store.card
   );
+
   const { bank, cardName, creditLine, balance } = singleCard;
   const { transactionByCard } = useSelector((store) => store.transaction);
+  const { user } = useSelector((store) => store.user);
   //console.log(transactionByCard);
   const transactions = [...transactionByCard];
   React.useEffect(() => {
     dispatch(getCardById(cardId));
-    dispatch(getTransactionsByCard(cardId));
+    dispatch(getTransactionsByCard({ cardId, userId: user.userId }));
   }, []);
   if (isLoading) {
     return <Spinner />;

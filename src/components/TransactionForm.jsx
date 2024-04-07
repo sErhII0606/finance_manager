@@ -17,82 +17,81 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { updateCard } from "../feachers/card/cardSlice";
 import { updateUserCashBalance } from "../feachers/user/userSlice";
-
-const TransactionForm = () => {
-  const infoArray = [
-    {
-      data: "Groceries",
-      img: "https://th.bing.com/th/id/OIP.ST_EuSVQtgSgQOT2_LBduQHaFD?w=251&h=180&c=7&r=0&o=5&pid=1.7",
-    },
-    {
-      data: "Cigarettes",
-      img: "https://th.bing.com/th/id/OIP.R1TX4l0TxzX-HRo7qKz_8gAAAA?w=204&h=240&c=7&r=0&o=5&pid=1.7",
-    },
-    {
-      data: "Weed",
-      img: "https://th.bing.com/th/id/OIP.ukz85MiDlJ38bWCAxGiwIwHaE8?w=270&h=180&c=7&r=0&o=5&pid=1.7",
-    },
-    {
-      data: "Gas",
-      img: "https://tse4.mm.bing.net/th?id=OIP.qw11gwSTd-5jcxsyb6ArGgHaE8&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Lunch",
-      img: "https://tse4.mm.bing.net/th?id=OIP.Mk_JY9WdOhiX93IjaF9lIQHaJQ&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Amazon",
-      img: "https://tse3.mm.bing.net/th?id=OIP.BhAvqPlnLGi436N6VGFwZQHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Grilling",
-      img: "https://tse4.mm.bing.net/th?id=OIP.aAahtDus9N7w6l5U3rDLQwHaHa&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Tax",
-      img: "https://tse1.mm.bing.net/th?id=OIF.lHuYMqJLVG6s%2b%2fQDDzrN2A&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Car payment",
-      img: "https://tse1.mm.bing.net/th?id=OIP.M8Q3HBoMRbDVIN09L5IHvwHaCp&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Insurance",
-      img: "https://tse1.mm.bing.net/th?id=OIP.XUfYw2UdnqoV7xNc9Pq6_AAAAA&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Card payment",
-      img: "https://tse4.mm.bing.net/th?id=OIP.3w5ft1iEuyHcgLRuHWaAGAHaD4&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Testosterone",
-      img: "https://tse3.mm.bing.net/th?id=OIP.RllkMCHGjWFjgJwIHuvIGwHaH7&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Doctor/labs",
-      img: "https://www.villagemedical.com/hubfs/images/Village-medical-vertical-color.svg",
-    },
-    {
-      data: "Home",
-      img: "https://tse1.mm.bing.net/th?id=OIP.CcLnxiHn1P-D_2gsa1p1HgHaE8&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Rent",
-      img: "https://tse3.mm.bing.net/th?id=OIP.pkUFumnNLbqTlKfvJGt5DwHaEq&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Coffee",
-      img: "https://tse2.mm.bing.net/th?id=OIP.bnI206rBNel1etVbUjIScQHaJ-&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Jym",
-      img: "https://tse1.mm.bing.net/th?id=OIF.Jp2%2bU8dyIB91GOB7bHJwuw&pid=Api&P=0&h=180",
-    },
-    {
-      data: "Tolls",
-      img: "https://tse1.mm.bing.net/th?id=OIP.Vl9OSqwgLlv6xHxMgZEukAAAAA&pid=Api&P=0&h=180",
-    },
-  ];
+export const infoArray = [
+  {
+    data: "Groceries",
+    img: "https://th.bing.com/th/id/OIP.ST_EuSVQtgSgQOT2_LBduQHaFD?w=251&h=180&c=7&r=0&o=5&pid=1.7",
+  },
+  {
+    data: "Cigarettes",
+    img: "https://th.bing.com/th/id/OIP.R1TX4l0TxzX-HRo7qKz_8gAAAA?w=204&h=240&c=7&r=0&o=5&pid=1.7",
+  },
+  {
+    data: "Weed",
+    img: "https://th.bing.com/th/id/OIP.ukz85MiDlJ38bWCAxGiwIwHaE8?w=270&h=180&c=7&r=0&o=5&pid=1.7",
+  },
+  {
+    data: "Gas",
+    img: "https://tse4.mm.bing.net/th?id=OIP.qw11gwSTd-5jcxsyb6ArGgHaE8&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Lunch",
+    img: "https://tse4.mm.bing.net/th?id=OIP.Mk_JY9WdOhiX93IjaF9lIQHaJQ&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Amazon",
+    img: "https://tse3.mm.bing.net/th?id=OIP.BhAvqPlnLGi436N6VGFwZQHaHa&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Grilling",
+    img: "https://tse4.mm.bing.net/th?id=OIP.aAahtDus9N7w6l5U3rDLQwHaHa&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Tax",
+    img: "https://tse1.mm.bing.net/th?id=OIF.lHuYMqJLVG6s%2b%2fQDDzrN2A&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Car payment",
+    img: "https://tse1.mm.bing.net/th?id=OIP.M8Q3HBoMRbDVIN09L5IHvwHaCp&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Insurance",
+    img: "https://tse1.mm.bing.net/th?id=OIP.XUfYw2UdnqoV7xNc9Pq6_AAAAA&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Card payment",
+    img: "https://tse4.mm.bing.net/th?id=OIP.3w5ft1iEuyHcgLRuHWaAGAHaD4&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Testosterone",
+    img: "https://tse3.mm.bing.net/th?id=OIP.RllkMCHGjWFjgJwIHuvIGwHaH7&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Doctor/labs",
+    img: "https://www.villagemedical.com/hubfs/images/Village-medical-vertical-color.svg",
+  },
+  {
+    data: "Home",
+    img: "https://tse1.mm.bing.net/th?id=OIP.CcLnxiHn1P-D_2gsa1p1HgHaE8&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Rent",
+    img: "https://tse3.mm.bing.net/th?id=OIP.pkUFumnNLbqTlKfvJGt5DwHaEq&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Coffee",
+    img: "https://tse2.mm.bing.net/th?id=OIP.bnI206rBNel1etVbUjIScQHaJ-&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Jym",
+    img: "https://tse1.mm.bing.net/th?id=OIF.Jp2%2bU8dyIB91GOB7bHJwuw&pid=Api&P=0&h=180",
+  },
+  {
+    data: "Tolls",
+    img: "https://tse1.mm.bing.net/th?id=OIP.Vl9OSqwgLlv6xHxMgZEukAAAAA&pid=Api&P=0&h=180",
+  },
+];
+const TransactionForm = ({ setAddTransaction }) => {
   const [customInfo, setCustomInfo] = useState(false);
   const { info, cardId, amount, img, isLoading } = useSelector(
     (store) => store.transaction
@@ -211,8 +210,13 @@ const TransactionForm = () => {
             //console.log({ ...card, balance: +card.balance + +amount });
             dispatch(updateCard({ ...card, balance: +card.balance + +amount }));
           }
-          dispatch(addNewTransaction({ cardId, info, amount, userId, img }));
+          let infoR = customInfo ? `custom:${info}` : info;
+          dispatch(
+            addNewTransaction({ cardId, info: infoR, amount, userId, img })
+          );
           dispatch(clearValuesTransactions());
+          setAddTransaction(false);
+          setCustomInfo(false);
         }}
       >
         Submit

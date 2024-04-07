@@ -10,10 +10,11 @@ import {
   getTransactionByIdThunk,
   deleteTransactionThunk,
   getTransactionsByCardThunk,
+  getTransactionsByCategoryThunk,
 } from "./transactionsThunk";
 import { toast } from "react-toastify";
 const initialState = {
-  transactions: getDataFromLocalStorage("transactions", []),
+  transactions: [],
   transactionByCard: [],
   deletedId: "",
   singleTransaction: {},
@@ -36,6 +37,10 @@ export const addNewTransaction = createAsyncThunk(
 export const getTransactionsByCard = createAsyncThunk(
   "transaction/getTransactionsByCard",
   getTransactionsByCardThunk
+);
+export const getTransactionsByCategory = createAsyncThunk(
+  "transaction/getTransactionsByCategory",
+  getTransactionsByCategoryThunk
 );
 export const deleteTransaction = createAsyncThunk(
   "transaction/deleteTransaction",
@@ -86,14 +91,6 @@ const transactionSlice = createSlice({
       })
       .addCase(addNewTransaction.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.transactions = [
-          payload,
-          ...getDataFromLocalStorage("transactions", []),
-        ];
-        addDataToLocalStorage("transactions", [
-          payload,
-          ...getDataFromLocalStorage("transactions", []),
-        ]);
         toast.success(`new transaction added`);
       })
       .addCase(addNewTransaction.rejected, (state, { payload }) => {
@@ -106,7 +103,6 @@ const transactionSlice = createSlice({
       .addCase(getUserTransactions.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.transactions = payload;
-        addDataToLocalStorage("transactions", payload);
       })
       .addCase(getUserTransactions.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -136,18 +132,24 @@ const transactionSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       })
+      .addCase(getTransactionsByCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTransactionsByCategory.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.transactions = payload.Items;
+        //console.log(payload);
+      })
+      .addCase(getTransactionsByCategory.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
       .addCase(deleteTransaction.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(deleteTransaction.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.singleTransaction = {};
-        addDataToLocalStorage(
-          "transactions",
-          getDataFromLocalStorage("transactions", []).filter(
-            (transaction) => transaction.transactionId !== payload
-          )
-        );
         toast.error("transaction deleted");
 
         state.deletedId = payload;

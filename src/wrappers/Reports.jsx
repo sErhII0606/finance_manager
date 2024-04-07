@@ -9,6 +9,9 @@ const Wrapper = styled.section`
     width: 65px;
     margin: auto;
   }
+  .bg-gray {
+    background-color: rgba(242, 242, 242, 0.3);
+  }
   @media (min-width: 992px) {
     .form-display {
       display: grid;

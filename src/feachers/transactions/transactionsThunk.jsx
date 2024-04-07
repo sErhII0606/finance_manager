@@ -1,5 +1,6 @@
 import { authHeader } from "../../util/authHeader";
 import customFetch from "../../util/axios";
+import { getUserTransactions } from "./tansactionsSlice";
 
 export const addNewTransactionThunk = async (transaction, thunkAPI) => {
   try {
@@ -8,7 +9,9 @@ export const addNewTransactionThunk = async (transaction, thunkAPI) => {
       { id: `${new Date().getTime()}`, ...transaction },
       authHeader(thunkAPI)
     );
-    console.log(resp);
+    thunkAPI.dispatch(
+      getUserTransactions(thunkAPI.getState().user.user.userId)
+    );
     return resp.data;
   } catch (error) {
     console.log(error);
@@ -55,10 +58,28 @@ export const deleteTransactionThunk = async (transactionId, thunkAPI) => {
   }
 };
 
-export const getTransactionsByCardThunk = async (cardId, thunkAPI) => {
+export const getTransactionsByCardThunk = async (
+  { cardId, userId },
+  thunkAPI
+) => {
   try {
     const resp = await customFetch.get(
-      `/transactions/sortingTransactionsByCard?cardId=${cardId}`,
+      `/transactions/sortingTransactionsByCard?cardId=${cardId}&userId=${userId}`,
+      authHeader(thunkAPI)
+    );
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const getTransactionsByCategoryThunk = async (
+  { category, userId },
+  thunkAPI
+) => {
+  try {
+    const resp = await customFetch.get(
+      `/transactions/sortingTransactionsByCategory?info=${category}&userId=${userId}`,
       authHeader(thunkAPI)
     );
     return resp.data;

@@ -4,6 +4,11 @@ const Wrapper = styled.section`
   .form-display {
     // align-items: center;
   }
+  .add-transaction-form {
+    max-width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .icon-img {
     height: 45px;
     width: 65px;
@@ -13,9 +18,9 @@ const Wrapper = styled.section`
     .form-display {
       display: grid;
 
-      grid-template-columns: 40% 60%;
+      grid-template-columns: 70% 30%;
       gap: 1rem;
-      padding: 70px;
+      padding: 10px;
     }
   }
 `;
