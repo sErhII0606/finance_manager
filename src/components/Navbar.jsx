@@ -49,6 +49,13 @@ const Navbar = () => {
               >
                 Credit Cards
               </Nav.Link>
+              <Nav.Link
+                onClick={() => {
+                  navigate("/reports");
+                }}
+              >
+                Reports
+              </Nav.Link>
               <Button
                 variant="danger"
                 disabled={isLoading}

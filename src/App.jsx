@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
+import "rsuite/dist/rsuite.min.css";
 import SharedLayout from "./components/SharedLayout";
 import Transactions from "./pages/Transactions";
 import Error from "./pages/Error";
@@ -16,6 +17,7 @@ import CreditCards from "./pages/CreditCards";
 import SingleCard from "./pages/SingleCard";
 import SingleTransaction from "./pages/SingleTransaction";
 import CashBalance from "./pages/CashBalance";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
           }
         >
           <Route index element={<Home />} />
+          <Route path="reports" element={<Reports />} />
           <Route path="transactions" element={<Transactions />} />
           <Route
             path="transaction/:transactionId/info"

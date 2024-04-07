@@ -35,14 +35,21 @@ const Home = () => {
               navigate("/transactions");
             }}
           >
-            transaction
+            Transaction
           </Button>
           <Button
             onClick={() => {
               navigate("/creditCards");
             }}
           >
-            creditCards
+            Credit Cards
+          </Button>
+          <Button
+            onClick={() => {
+              navigate("/reports");
+            }}
+          >
+            Reports
           </Button>
           <Button variant="danger" onClick={() => dispatch(clearStore("bye"))}>
             Logout

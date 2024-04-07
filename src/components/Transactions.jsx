@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Image } from "react-bootstrap";
 const Transactions = ({ transactions }) => {
   return (
-    <ListGroup as="ol" style={{ overflow: "auto", height: "500px" }}>
+    <ListGroup as="ol" style={{ overflow: "auto", maxHeight: "500px" }}>
       {transactions
         .sort((a, b) => b.createdAt - a.createdAt)
         .map((t, i) => {
