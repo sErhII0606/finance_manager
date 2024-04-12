@@ -50,6 +50,10 @@ export const getUserTransactions = createAsyncThunk(
   "transaction/getUserTransactions",
   getUserTransactionsThunk
 );
+export const getUserMonthTransactions = createAsyncThunk(
+  "transaction/getUserMonthTransactions",
+  getUserTransactionsThunk
+);
 export const getTransactionById = createAsyncThunk(
   "transaction/getTransactionById",
   getTransactionByIdThunk
@@ -102,7 +106,27 @@ const transactionSlice = createSlice({
       })
       .addCase(getUserTransactions.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.transactions = payload;
+        state.transactions = payload.resp;
+      })
+      .addCase(getUserMonthTransactions.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(getUserMonthTransactions.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserMonthTransactions.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        //state.transactions = payload.resp;
+        const arr = [...payload.resp].filter(
+          (item) =>
+            new Date(item.createdAt).getFullYear() ==
+              new Date(payload.dateStart).getFullYear() &&
+            new Date(item.createdAt).getMonth() ==
+              new Date(payload.dateStart).getMonth()
+        );
+        state.transactions = arr;
+        //console.log([...payload.resp], payload.dateStart, payload.dateEnd, arr);
       })
       .addCase(getUserTransactions.rejected, (state, { payload }) => {
         state.isLoading = false;
@@ -137,7 +161,14 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransactionsByCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.transactions = payload.Items;
+        const arr = [...payload.resp.Items].filter(
+          (item) =>
+            new Date(item.createdAt).getFullYear() ==
+              new Date(payload.dateStart).getFullYear() &&
+            new Date(item.createdAt).getMonth() ==
+              new Date(payload.dateStart).getMonth()
+        );
+        state.transactions = arr;
         //console.log(payload);
       })
       .addCase(getTransactionsByCategory.rejected, (state, { payload }) => {

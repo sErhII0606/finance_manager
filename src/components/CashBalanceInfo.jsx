@@ -40,7 +40,7 @@ const CashBalanceInfo = () => {
                     )
                   }
                 >
-                  SUBMIT
+                  {isLoading ? "PLEASE WAIT" : "SUBMIT"}
                 </button>
               </Col>
             </Row>

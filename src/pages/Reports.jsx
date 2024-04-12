@@ -3,27 +3,49 @@ import { Calendar, Whisper, Popover, Badge } from "rsuite";
 import Wrapper from "../wrappers/Reports";
 import {
   getTransactionsByCategory,
+  getUserMonthTransactions,
   getUserTransactions,
 } from "../feachers/transactions/tansactionsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionsDisplay from "../components/TransactionsDisplay";
 import { infoArray } from "../components/TransactionForm";
 import CategoryNavbar from "../components/CategoryNavbar";
+import DateNavbar from "../components/DateNavbar";
 import { spendingList } from "../components/TransactionCalendar";
 import { Spinner } from "react-bootstrap";
+import ReportsSumuries from "../components/ReportsSumuries";
 const Reports = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const [view, setView] = useState(false);
   const [category, setCategory] = useState("");
   const { transactions, isLoading } = useSelector((store) => store.transaction);
+  const { year, month, date } = useSelector((store) => store.report);
+  const [dates, setDates] = useState([
+    new Date(Date.UTC(year, month, date, 6, 0, 0)),
+    new Date(Date.UTC(year, month + 1, date, 6, 0, 0)),
+  ]);
+  //console.log(year, month, date, new Date(Date.UTC(96, 1, 2)));
   const handleSearch = (category) => {
-    dispatch(getTransactionsByCategory({ category, userId: user.userId }));
+    dispatch(
+      getTransactionsByCategory({
+        category,
+        userId: user.userId,
+        dateStart: dates[0].valueOf(),
+        dateEnd: dates[1].valueOf(),
+      })
+    );
   };
   const tran = [...transactions];
 
   React.useEffect(() => {
-    dispatch(getUserTransactions(user.userId));
+    dispatch(
+      getUserMonthTransactions({
+        userId: user.userId,
+        dateStart: dates[0].valueOf(),
+        dateEnd: dates[1].valueOf(),
+      })
+    );
   }, []);
   const renderCell = (date) => {
     const list = spendingList(date, transactions);
@@ -47,45 +69,78 @@ const Reports = () => {
 
     return null;
   };
+
   /*   React.useEffect(() => {
     dispatch(getTransactionsByCategory(category));
   }, [category]); */
   return (
     <Wrapper>
       <div>
-        <CategoryNavbar
+        <DateNavbar setDates={setDates} />
+        {/*  <CategoryNavbar
           categories={infoArray.map((e) => e.data)}
           setView={setView}
           handleSearch={handleSearch}
           setCategory={setCategory}
-        />
+        /> */}
+
         <div className="form-display">
           <div>
             <Calendar
               compact
               renderCell={renderCell}
               bordered
+              value={new Date(Date.UTC(year, month, date + 1))}
+              onSelect={(e) => console.log(e)}
               cellClassName={(date) =>
-                date.getDay() % 2 ? "bg-gray" : undefined
+                date.getDay() % 2 ? "bg-gray calendar-cell" : "calendar-cell"
               }
             />
           </div>
           {view ? (
             <div>
+              <h3>{`${dates[0].toDateString()}-${dates[1].toDateString()}`}</h3>
               {category && <h2>{category}</h2>}
-              <TransactionsDisplay transactions={tran} />
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <TransactionsDisplay
+                  transactions={tran}
+                  isLoading={isLoading}
+                />
+              )}
               <button
                 type="button"
+                disabled={isLoading}
                 onClick={() => {
                   setView(false);
                   setCategory("");
+                  dispatch(
+                    getUserMonthTransactions({
+                      userId: user.userId,
+                      dateStart: new Date(
+                        Date.UTC(year, month, date, 6, 0, 0)
+                      ).valueOf(),
+                      dateEnd: new Date(
+                        Date.UTC(year, month + 1, date, 6, 0, 0)
+                      ).valueOf(),
+                    })
+                  );
                 }}
               >
                 Close
               </button>
             </div>
           ) : (
-            <div>fd</div>
+            <div>
+              <h3>{`${dates[0].toDateString()}-${dates[1].toDateString()}`}</h3>
+              <ReportsSumuries
+                setView={setView}
+                handleSearch={handleSearch}
+                setCategory={setCategory}
+              />{" "}
+              {/*     <TransactionsDisplay transactions={tran} isLoading={isLoading} /> */}
+            </div>
           )}
         </div>
       </div>

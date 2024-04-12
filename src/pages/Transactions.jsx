@@ -72,7 +72,7 @@ const Transactions = () => {
     setView(true);
   };
   React.useEffect(() => {
-    dispatch(getUserTransactions(user.userId));
+    dispatch(getUserTransactions({ userId: user.userId }));
   }, []);
   return (
     <Wrapper>

@@ -10,7 +10,7 @@ export const addNewTransactionThunk = async (transaction, thunkAPI) => {
       authHeader(thunkAPI)
     );
     thunkAPI.dispatch(
-      getUserTransactions(thunkAPI.getState().user.user.userId)
+      getUserTransactions({ userId: thunkAPI.getState().user.user.userId })
     );
     return resp.data;
   } catch (error) {
@@ -20,13 +20,16 @@ export const addNewTransactionThunk = async (transaction, thunkAPI) => {
   }
 };
 
-export const getUserTransactionsThunk = async (userId, thunkAPI) => {
+export const getUserTransactionsThunk = async (
+  { userId, dateStart, dateEnd },
+  thunkAPI
+) => {
   try {
     const resp = await customFetch.get(
       `/transactions?userId=${userId}`,
       authHeader(thunkAPI)
     );
-    return resp.data;
+    return { resp: resp.data, dateStart, dateEnd };
   } catch (error) {
     //  toast.error(error.response.data.msg);
     return thunkAPI.rejectWithValue(error.response.data.msg);
@@ -74,7 +77,7 @@ export const getTransactionsByCardThunk = async (
   }
 };
 export const getTransactionsByCategoryThunk = async (
-  { category, userId },
+  { category, userId, dateStart, dateEnd },
   thunkAPI
 ) => {
   try {
@@ -82,7 +85,7 @@ export const getTransactionsByCategoryThunk = async (
       `/transactions/sortingTransactionsByCategory?info=${category}&userId=${userId}`,
       authHeader(thunkAPI)
     );
-    return resp.data;
+    return { resp: resp.data, dateStart, dateEnd };
   } catch (error) {
     //  toast.error(error.response.data.msg);
     return thunkAPI.rejectWithValue(error.response.data.msg);

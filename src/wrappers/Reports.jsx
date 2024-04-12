@@ -4,6 +4,9 @@ const Wrapper = styled.section`
   .form-display {
     // align-items: center;
   }
+  .calendar-cell {
+    height: 5rem;
+  }
   .icon-img {
     height: 45px;
     width: 65px;
@@ -16,7 +19,7 @@ const Wrapper = styled.section`
     .form-display {
       display: grid;
 
-      grid-template-columns: 70% 30%;
+      grid-template-columns: 60% 40%;
       gap: 1rem;
       padding: 10px;
     }
