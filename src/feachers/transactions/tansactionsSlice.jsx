@@ -11,12 +11,14 @@ import {
   deleteTransactionThunk,
   getTransactionsByCardThunk,
   getTransactionsByCategoryThunk,
+  getUserTransactionsReportThunk,
 } from "./transactionsThunk";
 import { toast } from "react-toastify";
 const initialState = {
   transactions: [],
   transactionByCard: [],
   deletedId: "",
+  report: [],
   singleTransaction: {},
   transactionId: "",
   info: "",
@@ -33,6 +35,10 @@ export const addNewTransaction = createAsyncThunk(
   "transaction/addNewTransaction",
   addNewTransactionThunk
 );
+export const getUserTransactionsReport = createAsyncThunk(
+  "transaction/getUserTransactionsReport",
+  getUserTransactionsReportThunk
+);
 
 export const getTransactionsByCard = createAsyncThunk(
   "transaction/getTransactionsByCard",
@@ -48,10 +54,6 @@ export const deleteTransaction = createAsyncThunk(
 );
 export const getUserTransactions = createAsyncThunk(
   "transaction/getUserTransactions",
-  getUserTransactionsThunk
-);
-export const getUserMonthTransactions = createAsyncThunk(
-  "transaction/getUserMonthTransactions",
   getUserTransactionsThunk
 );
 export const getTransactionById = createAsyncThunk(
@@ -108,27 +110,21 @@ const transactionSlice = createSlice({
         state.isLoading = false;
         state.transactions = payload.resp;
       })
-      .addCase(getUserMonthTransactions.rejected, (state, { payload }) => {
+      .addCase(getUserTransactions.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       })
-      .addCase(getUserMonthTransactions.pending, (state) => {
+      .addCase(getUserTransactionsReport.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUserMonthTransactions.fulfilled, (state, { payload }) => {
+      .addCase(getUserTransactionsReport.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        //state.transactions = payload.resp;
-        const arr = [...payload.resp].filter(
-          (item) =>
-            new Date(item.createdAt).getFullYear() ==
-              new Date(payload.dateStart).getFullYear() &&
-            new Date(item.createdAt).getMonth() ==
-              new Date(payload.dateStart).getMonth()
-        );
-        state.transactions = arr;
-        //console.log([...payload.resp], payload.dateStart, payload.dateEnd, arr);
+        //  console.log(payload);
+        state.transactions = payload.tran;
+        state.report = payload.report;
+        // state.transactions = payload.resp;
       })
-      .addCase(getUserTransactions.rejected, (state, { payload }) => {
+      .addCase(getUserTransactionsReport.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       })
@@ -161,14 +157,8 @@ const transactionSlice = createSlice({
       })
       .addCase(getTransactionsByCategory.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        const arr = [...payload.resp.Items].filter(
-          (item) =>
-            new Date(item.createdAt).getFullYear() ==
-              new Date(payload.dateStart).getFullYear() &&
-            new Date(item.createdAt).getMonth() ==
-              new Date(payload.dateStart).getMonth()
-        );
-        state.transactions = arr;
+
+        state.transactions = payload;
         //console.log(payload);
       })
       .addCase(getTransactionsByCategory.rejected, (state, { payload }) => {

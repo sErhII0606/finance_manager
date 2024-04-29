@@ -16,6 +16,104 @@ export const registerUserThunk = async (user, thunkAPI) => {
   }
 };
 
+export const updatePasswordThunk = async (password, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(
+      `/user/changePassword`,
+      password,
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const verifyEmailThunk = async (email, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(
+      `/verifyEmail`,
+      { email },
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const receiveReportThunk = async (email, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(
+      `/emailReport`,
+      email,
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const updateNicknameThunk = async (
+  { AccessToken, newNickname },
+  thunkAPI
+) => {
+  try {
+    const resp = await customFetch.post(
+      `/user/updateNickname`,
+      { AccessToken, newNickname },
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const logoutThunk = async (AccessToken, thunkAPI) => {
+  try {
+    const resp = await customFetch.post(
+      `/user/signOut`,
+      { AccessToken },
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const deleteUserThunk = async ({ accessToken, userId }, thunkAPI) => {
+  try {
+    const resp = await customFetch.delete(
+      `/user/deleteUser?AccessToken=${accessToken}&userId=${userId}`,
+      authHeader(thunkAPI)
+    ); /* 
+    console.log(resp.data.Value);
+    const userId = resp.data.Value;
+    thunkAPI.dispatch(getUserCashBalance(userId)); */
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
 export const loginUserThunk = async (user, thunkAPI) => {
   try {
     const resp = await customFetch.post("/user/login", user); /* 
@@ -29,24 +127,9 @@ export const loginUserThunk = async (user, thunkAPI) => {
   }
 };
 
-export const updateUserThunk = async (user, thunkAPI) => {
+export const clearStoreThunk = async (AccessToken, thunkAPI) => {
   try {
-    const resp = await customFetch.patch(
-      "/user/updateUser",
-      user,
-      authHeader(thunkAPI)
-    );
-    console.log(user);
-    return resp.data;
-  } catch (error) {
-    console.log(error.response);
-    return thunkAPI.rejectWithValue(error.response.data.msg);
-  }
-};
-
-export const clearStoreThunk = async (msg, thunkAPI) => {
-  try {
-    thunkAPI.dispatch(logout(msg));
+    thunkAPI.dispatch(logout(AccessToken));
     thunkAPI.dispatch(clearValues());
     thunkAPI.dispatch(clearValuesTransactions());
     return Promise.resolve();

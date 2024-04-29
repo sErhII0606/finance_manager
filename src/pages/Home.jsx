@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import useDeviceSize from "../util/useDeviceSize";
 import {
   clearStore,
+  deleteUser,
   getUserCashBalance,
   logout,
 } from "../feachers/user/userSlice";
@@ -51,7 +52,18 @@ const Home = () => {
           >
             Reports
           </Button>
-          <Button variant="danger" onClick={() => dispatch(clearStore("bye"))}>
+          <Button
+            onClick={() => {
+              navigate("/settings");
+            }}
+          >
+            Settings
+          </Button>
+          <Button
+            variant="danger"
+            disabled={isLoading}
+            onClick={() => dispatch(clearStore(user.accessToken))}
+          >
             Logout
           </Button>
         </div>

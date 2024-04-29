@@ -10,8 +10,7 @@ import useDeviceSize from "../util/useDeviceSize";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((store) => store.user);
-
+  const { isLoading, user } = useSelector((store) => store.user);
   const [width, height] = useDeviceSize();
   return (
     <NavbarBootstrap bg="primary" data-bs-theme="dark">
@@ -56,10 +55,17 @@ const Navbar = () => {
               >
                 Reports
               </Nav.Link>
+              <Nav.Link
+                onClick={() => {
+                  navigate("/settings");
+                }}
+              >
+                Settings
+              </Nav.Link>
               <Button
                 variant="danger"
                 disabled={isLoading}
-                onClick={() => dispatch(clearStore("bye"))}
+                onClick={() => dispatch(clearStore(user.accessToken))}
               >
                 Logout
               </Button>

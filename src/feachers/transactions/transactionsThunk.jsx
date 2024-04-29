@@ -35,6 +35,21 @@ export const getUserTransactionsThunk = async (
     return thunkAPI.rejectWithValue(error.response.data.msg);
   }
 };
+export const getUserTransactionsReportThunk = async (
+  { userId, month, year },
+  thunkAPI
+) => {
+  try {
+    const resp = await customFetch.get(
+      `/transactions/report?userId=${userId}&month=${month}&year=${year}`,
+      authHeader(thunkAPI)
+    );
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
 
 export const getTransactionByIdThunk = async (transactionId, thunkAPI) => {
   try {
@@ -77,15 +92,15 @@ export const getTransactionsByCardThunk = async (
   }
 };
 export const getTransactionsByCategoryThunk = async (
-  { category, userId, dateStart, dateEnd },
+  { category, userId, year, month },
   thunkAPI
 ) => {
   try {
     const resp = await customFetch.get(
-      `/transactions/sortingTransactionsByCategory?info=${category}&userId=${userId}`,
+      `/transactions/sortingTransactionsByCategory?info=${category}&userId=${userId}&month=${month}&year=${year}`,
       authHeader(thunkAPI)
     );
-    return { resp: resp.data, dateStart, dateEnd };
+    return resp.data;
   } catch (error) {
     //  toast.error(error.response.data.msg);
     return thunkAPI.rejectWithValue(error.response.data.msg);

@@ -19,14 +19,13 @@ const initialState = {
 import { Link } from "react-router-dom";
 
 const Register = () => {
-  const [values, setValues] = useState(initialState);
-
   const { user, isLoading } = useSelector((store) => store.user);
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
+  const [values, setValues] = useState(initialState);
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;

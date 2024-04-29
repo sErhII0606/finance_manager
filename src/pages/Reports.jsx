@@ -3,8 +3,8 @@ import { Calendar, Whisper, Popover, Badge } from "rsuite";
 import Wrapper from "../wrappers/Reports";
 import {
   getTransactionsByCategory,
-  getUserMonthTransactions,
   getUserTransactions,
+  getUserTransactionsReport,
 } from "../feachers/transactions/tansactionsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import TransactionsDisplay from "../components/TransactionsDisplay";
@@ -14,10 +14,12 @@ import DateNavbar from "../components/DateNavbar";
 import { spendingList } from "../components/TransactionCalendar";
 import { Spinner } from "react-bootstrap";
 import ReportsSumuries from "../components/ReportsSumuries";
+import EmailConfirmation from "../components/EmailConfirmation";
 const Reports = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const [view, setView] = useState(false);
+  const [emailConf, setEmailConf] = useState(false);
   const [category, setCategory] = useState("");
   const { transactions, isLoading } = useSelector((store) => store.transaction);
   const { year, month, date } = useSelector((store) => store.report);
@@ -31,21 +33,14 @@ const Reports = () => {
       getTransactionsByCategory({
         category,
         userId: user.userId,
-        dateStart: dates[0].valueOf(),
-        dateEnd: dates[1].valueOf(),
+        year,
+        month,
       })
     );
   };
   const tran = [...transactions];
-
   React.useEffect(() => {
-    dispatch(
-      getUserMonthTransactions({
-        userId: user.userId,
-        dateStart: dates[0].valueOf(),
-        dateEnd: dates[1].valueOf(),
-      })
-    );
+    dispatch(getUserTransactionsReport({ userId: user.userId, month, year }));
   }, []);
   const renderCell = (date) => {
     const list = spendingList(date, transactions);
@@ -76,7 +71,15 @@ const Reports = () => {
   return (
     <Wrapper>
       <div>
-        <DateNavbar setDates={setDates} />
+        {emailConf ? (
+          <EmailConfirmation setEmailConf={setEmailConf} dates={dates} />
+        ) : (
+          <DateNavbar
+            setDates={setDates}
+            dates={dates}
+            setEmailConf={setEmailConf}
+          />
+        )}
         {/*  <CategoryNavbar
           categories={infoArray.map((e) => e.data)}
           setView={setView}
@@ -115,15 +118,12 @@ const Reports = () => {
                 onClick={() => {
                   setView(false);
                   setCategory("");
+
                   dispatch(
-                    getUserMonthTransactions({
+                    getUserTransactionsReport({
                       userId: user.userId,
-                      dateStart: new Date(
-                        Date.UTC(year, month, date, 6, 0, 0)
-                      ).valueOf(),
-                      dateEnd: new Date(
-                        Date.UTC(year, month + 1, date, 6, 0, 0)
-                      ).valueOf(),
+                      month,
+                      year,
                     })
                   );
                 }}

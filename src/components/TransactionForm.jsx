@@ -15,7 +15,10 @@ import {
 } from "../feachers/transactions/tansactionsSlice";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { updateCard } from "../feachers/card/cardSlice";
+import {
+  updateCard,
+  updateCreditCardBalance,
+} from "../feachers/card/cardSlice";
 import { updateUserCashBalance } from "../feachers/user/userSlice";
 export const infoArray = [
   {
@@ -117,7 +120,7 @@ const TransactionForm = ({ setAddTransaction }) => {
   const { user } = useSelector((store) => store.user);
   const { cards } = useSelector((store) => store.card);
   const { userId, cashBalance } = user;
-  console.log(cashBalance);
+
   const dispatch = useDispatch();
   const handleCardInput = (e) => {
     const name = e.target.name;
@@ -179,12 +182,13 @@ const TransactionForm = ({ setAddTransaction }) => {
             defaultValue="Choose..."
             onChange={(e) => {
               if (e.target.value === "Choose...") return;
-              console.log(e.target.value);
+
               if (e.target.value === "Cash") {
                 dispatch(setCardId("CASH"));
                 return;
               }
               dispatch(setCardId(e.target.value));
+              console.log(e.target.value);
             }}
           >
             <option>Choose...</option>
@@ -224,11 +228,12 @@ const TransactionForm = ({ setAddTransaction }) => {
               updateUserCashBalance({ userId, balance: +cashBalance - +amount })
             );
           } else {
-            const card = cards.find((c) => c.cardId === cardId);
+            // const card = cards.find((c) => c.cardId === cardId);
             //console.log({ ...card, balance: +card.balance + +amount });
-            dispatch(updateCard({ ...card, balance: +card.balance + +amount }));
+            dispatch(updateCreditCardBalance({ cardId, amount }));
           }
           let infoR = customInfo ? `custom:${info}` : info;
+          // console.log({ cardId, info: infoR, amount, userId, img });
           dispatch(
             addNewTransaction({ cardId, info: infoR, amount, userId, img })
           );

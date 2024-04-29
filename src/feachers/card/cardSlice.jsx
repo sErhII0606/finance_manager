@@ -10,6 +10,7 @@ import {
   getCardByIdThunk,
   deleteCardThunk,
   updateCardThunk,
+  updateCreditCardBalanceThunk,
 } from "./cardThunk";
 import { toast } from "react-toastify";
 const initialState = {
@@ -27,6 +28,10 @@ const initialState = {
 export const addNewCard = createAsyncThunk("card/addNewCard", addNewCardThunk);
 export const updateCard = createAsyncThunk("card/updateCard", updateCardThunk);
 export const deleteCard = createAsyncThunk("card/deleteCard", deleteCardThunk);
+export const updateCreditCardBalance = createAsyncThunk(
+  "card/updateCreditCardBalance",
+  updateCreditCardBalanceThunk
+);
 export const getUserCards = createAsyncThunk(
   "card/getUserCards",
   getUserCardsThunk
@@ -128,6 +133,28 @@ const cardSlice = createSlice({
         toast.success("card edited");
       })
       .addCase(updateCard.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(updateCreditCardBalance.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCreditCardBalance.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.singleCard = payload;
+        const card = getDataFromLocalStorage("cards", []).find(
+          (c) => c.cardId === payload.cardId
+        );
+        addDataToLocalStorage("cards", [
+          ...getDataFromLocalStorage("cards", []).filter(
+            (c) => c.cardId !== payload.cardId
+          ),
+          { ...payload, userId: card.userId },
+        ]);
+        console.log(payload);
+        toast.success("card edited");
+      })
+      .addCase(updateCreditCardBalance.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
       });

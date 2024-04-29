@@ -9,14 +9,20 @@ import {
 import {
   loginUserThunk,
   registerUserThunk,
-  updateUserThunk,
   clearStoreThunk,
   addUserCashBalanceThunk,
   updateUserCashBalanceThunk,
   getUserCashBalanceThunk,
+  deleteUserThunk,
+  updatePasswordThunk,
+  updateNicknameThunk,
+  logoutThunk,
+  verifyEmailThunk,
+  receiveReportThunk,
 } from "./userThunk";
 const initialState = {
   isLoading: false,
+  isReportLoading: false,
   user: getDataFromLocalStorage("user", null),
 };
 
@@ -25,7 +31,25 @@ export const registerUser = createAsyncThunk(
   registerUserThunk
 );
 export const loginUser = createAsyncThunk("user/loginUser", loginUserThunk);
+export const updatePassword = createAsyncThunk(
+  "user/updatePassword",
+  updatePasswordThunk
+);
+export const updateNickname = createAsyncThunk(
+  "user/updateNickname",
+  updateNicknameThunk
+);
+export const deleteUser = createAsyncThunk("user/deleteUser", deleteUserThunk);
+export const receiveReport = createAsyncThunk(
+  "user/receiveReport",
+  receiveReportThunk
+);
+export const logout = createAsyncThunk("user/logout", logoutThunk);
 export const clearStore = createAsyncThunk("user/clearStore", clearStoreThunk);
+export const verifyEmail = createAsyncThunk(
+  "user/verifyEmail",
+  verifyEmailThunk
+);
 export const addUserCashBalance = createAsyncThunk(
   "user/addUserCashBalance",
   addUserCashBalanceThunk
@@ -42,17 +66,22 @@ export const getUserCashBalance = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   balance: 0,
+  updatePasswordModal: false,
   initialState,
   reducers: {
-    logout: (state, { payload }) => {
+    /* logout: (state, { payload }) => {
       state.user = null;
       removeDataFromLocalStorage("user");
       removeDataFromLocalStorage("cards");
       removeDataFromLocalStorage("transactions");
       toast.warn(payload);
-    },
+    }, */
     setBalance: (state, { payload }) => {
       state.balance = payload;
+    },
+
+    setUpdatePasswordModal: (state, { payload }) => {
+      state.updatePasswordModal = payload;
     },
   },
   extraReducers: (builder) => {
@@ -94,22 +123,76 @@ const userSlice = createSlice({
         state.user = {
           nickname: user.nickname,
           email: user.email,
-          userId: user.Value, //AccessToken
-          refreshToken: user.AuthenticationResult.RefreshToken,
-          idToken: user.AuthenticationResult.IdToken,
+          userId: user.Value,
+          //refreshToken: user.AuthenticationResult.RefreshToken,
+          // idToken: user.AuthenticationResult.IdToken,
           accessToken: user.AuthenticationResult.AccessToken,
         };
         addDataToLocalStorage("user", {
           nickname: user.nickname,
           email: user.email,
-          userId: user.Value, //AccessToken
-          refreshToken: user.AuthenticationResult.RefreshToken,
-          idToken: user.AuthenticationResult.IdToken,
+          userId: user.Value,
+          //refreshToken: user.AuthenticationResult.RefreshToken,
+          // idToken: user.AuthenticationResult.IdToken,
           accessToken: user.AuthenticationResult.AccessToken,
         });
         toast.success(`Welcome back ${user.nickname}`);
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+
+        toast.error(payload);
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updatePassword.fulfilled, (state, { payload }) => {
+        state.updatePasswordModal = false;
+        state.isLoading = false;
+        toast.success(payload.message);
+      })
+      .addCase(updatePassword.rejected, (state, { payload }) => {
+        state.isLoading = false;
+
+        toast.error(payload);
+      })
+      .addCase(verifyEmail.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(verifyEmail.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        toast.success(payload.message);
+      })
+      .addCase(verifyEmail.rejected, (state, { payload }) => {
+        state.isLoading = false;
+
+        toast.error(payload);
+      })
+      .addCase(receiveReport.pending, (state) => {
+        state.isReportLoading = true;
+      })
+      .addCase(receiveReport.fulfilled, (state, { payload }) => {
+        state.isReportLoading = false;
+        toast.success(payload.message);
+      })
+      .addCase(receiveReport.rejected, (state, { payload }) => {
+        state.isReportLoading = false;
+
+        toast.error(payload);
+      })
+      .addCase(updateNickname.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateNickname.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user.nickname = payload.newNickname;
+        addDataToLocalStorage("user", {
+          ...getDataFromLocalStorage("user", null),
+          nickname: payload.newNickname,
+        });
+        toast.success(payload.message);
+      })
+      .addCase(updateNickname.rejected, (state, { payload }) => {
         state.isLoading = false;
 
         toast.error(payload);
@@ -164,10 +247,38 @@ const userSlice = createSlice({
         state.isLoading = false;
         toast.error(payload);
       })
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user = null;
+        removeDataFromLocalStorage("user");
+        toast.warn(payload.message);
+      })
+      .addCase(deleteUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.user = null;
+        removeDataFromLocalStorage("user");
+        removeDataFromLocalStorage("cards");
+
+        toast.warn(payload.message);
+      })
+      .addCase(logout.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
+      })
       .addCase(clearStore.rejected, () => {
         toast.error("ERROR");
       });
   },
 });
-export const { logout, setBalance } = userSlice.actions;
+export const { setBalance, setUpdatePasswordModal } = userSlice.actions;
 export default userSlice.reducer;

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import ProgressBar from "react-bootstrap/ProgressBar";
 const AllCardsInfo = () => {
   const { cards } = useSelector((state) => state.card);
-  console.log(cards);
+
   let i = 0;
   let j = 0;
   const totalBalance = cards.map((card) => (i = i + +card.balance))[

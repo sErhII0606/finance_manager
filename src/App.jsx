@@ -18,6 +18,7 @@ import SingleCard from "./pages/SingleCard";
 import SingleTransaction from "./pages/SingleTransaction";
 import CashBalance from "./pages/CashBalance";
 import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="transactions" element={<Transactions />} />
           <Route
             path="transaction/:transactionId/info"

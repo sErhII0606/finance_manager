@@ -5,7 +5,7 @@ export const addNewCardThunk = async (card, thunkAPI) => {
   try {
     const resp = await customFetch.post(
       "/card",
-      { id: `card${new Date().getTime()}`, ...card },
+      { cardId: `card${new Date().getTime()}`, ...card },
       authHeader(thunkAPI)
     );
     console.log(resp);
@@ -48,6 +48,20 @@ export const updateCardThunk = async (card, thunkAPI) => {
     const resp = await customFetch.put(
       `/card/${cardId}`,
       { bank, cardName, creditLine, balance },
+      authHeader(thunkAPI)
+    );
+    return resp.data;
+  } catch (error) {
+    //  toast.error(error.response.data.msg);
+    return thunkAPI.rejectWithValue(error.response.data.msg);
+  }
+};
+export const updateCreditCardBalanceThunk = async (card, thunkAPI) => {
+  const { amount, cardId } = card;
+  try {
+    const resp = await customFetch.put(
+      `/card/${cardId}/balance`,
+      { amount },
       authHeader(thunkAPI)
     );
     return resp.data;
