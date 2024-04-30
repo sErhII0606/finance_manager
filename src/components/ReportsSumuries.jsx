@@ -14,6 +14,37 @@ const ReportsSumuries = ({ setView, handleSearch, setCategory }) => {
   if (isLoading) {
     return <Spinner />;
   }
+
+  /*   return (
+    <div>
+      {info
+        .map((e) => {
+          if (report.find((el) => el.category === e.data)) {
+            const c = report.find((el) => el.category === e.data);
+            return { ...e, total: c.amount };
+          } else {
+            return e;
+          }
+        })
+        .map((el, i) => {
+          return (
+            <div key={i}>
+              <Button
+                variant="link"
+                onClick={() => {
+                  setView(true);
+                  handleSearch(el.data);
+                  setCategory(el.data);
+                }}
+              >
+                {el.data}
+              </Button>
+              <span>{`: $${el.total}`}</span>
+            </div>
+          );
+        })}
+    </div>
+  ); */
   return (
     <Table
       height={530}
@@ -33,6 +64,7 @@ const ReportsSumuries = ({ setView, handleSearch, setCategory }) => {
     >
       <Column
         onClick={(e) => {
+          console.log(e.target.firstChild.data);
           setView(true);
           handleSearch(e.target.firstChild.data);
           setCategory(e.target.firstChild.data);

@@ -105,10 +105,14 @@ const DateNavbar = ({ setDates, dates, setEmailConf }) => {
                 year,
               })
             );*/
+            setDates([
+              new Date(Date.UTC(year, month, date, 6, 0, 0)),
+              new Date(Date.UTC(year, month + 1, date, 6, 0, 0)),
+            ]);
             setEmailConf(true);
           }}
         >
-          Email Report
+          Download PDF
         </button>
       </Nav.Item>
     </Nav>

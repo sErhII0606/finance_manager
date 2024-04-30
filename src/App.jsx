@@ -19,6 +19,7 @@ import SingleTransaction from "./pages/SingleTransaction";
 import CashBalance from "./pages/CashBalance";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import MyDocument from "./pdf file/MyDocument";
 
 function App() {
   return (

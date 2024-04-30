@@ -15,6 +15,7 @@ import { spendingList } from "../components/TransactionCalendar";
 import { Spinner } from "react-bootstrap";
 import ReportsSumuries from "../components/ReportsSumuries";
 import EmailConfirmation from "../components/EmailConfirmation";
+import ViewReport from "../components/ViewReport";
 const Reports = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
@@ -72,7 +73,7 @@ const Reports = () => {
     <Wrapper>
       <div>
         {emailConf ? (
-          <EmailConfirmation setEmailConf={setEmailConf} dates={dates} />
+          <ViewReport setEmailConf={setEmailConf} dates={dates} />
         ) : (
           <DateNavbar
             setDates={setDates}

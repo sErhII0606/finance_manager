@@ -4,6 +4,39 @@ import { Message, Button, ButtonToolbar } from "rsuite";
 import { Input, InputGroup } from "rsuite";
 import { ControlRow } from "./UpdatePassword";
 import { receiveReport } from "../feachers/user/userSlice";
+import ReactPDF, {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  PDFDownloadLink,
+  usePDF,
+} from "@react-pdf/renderer";
+import MyDocument from "../pdf file/MyDocument";
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "row",
+    backgroundColor: "#E4E4E4",
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+});
+const MyDoc = (
+  <Document>
+    <Page size="A4" style={styles.page}>
+      <View style={styles.section}>
+        <Text>Section #1</Text>
+      </View>
+      <View style={styles.section}>
+        <Text>Section #2</Text>
+      </View>
+    </Page>
+  </Document>
+);
 const EmailConfirmation = ({ setEmailConf, dates }) => {
   const dispatch = useDispatch();
   const { user, isLoading } = useSelector((store) => store.user);
@@ -19,6 +52,8 @@ const EmailConfirmation = ({ setEmailConf, dates }) => {
     setValues({ ...values, [name]: value });
   };
 
+  const [instance, updateInstance] = usePDF({ document: MyDoc });
+  console.log(instance);
   const { year, month, date } = useSelector((store) => store.report);
   return (
     <Message
@@ -59,6 +94,7 @@ const EmailConfirmation = ({ setEmailConf, dates }) => {
         <Button
           size="sm"
           onClick={() => {
+            /* 
             dispatch(
               receiveReport({
                 to: emailToSend,
@@ -71,11 +107,17 @@ const EmailConfirmation = ({ setEmailConf, dates }) => {
                 year,
               })
             );
-            setEmailConf(false); //move to redux!!!!
+            setEmailConf(false); //move to redux!!!! */
           }}
         >
           Send Email
         </Button>
+        <a href={instance.url}>sss</a>
+        <PDFDownloadLink document={<MyDocument />} fileName="FORM">
+          {({ loading }) =>
+            loading ? <button>Loading Doc</button> : <button>Download</button>
+          }
+        </PDFDownloadLink>
         <Button size="sm" onClick={() => setEmailConf(false)}>
           Go Back
         </Button>
