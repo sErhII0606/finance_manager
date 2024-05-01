@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
   },
   text: {
     borderBottom: 1,
+    borderLeft: 1,
+    borderRight: 1,
+    borderTop: 1,
   },
 });
 
@@ -63,13 +66,20 @@ const ViewReport = ({ setEmailConf, dates }) => {
       return e;
     }
   });
-  console.log(reportArr);
+  const tran = [...transactions];
+
+  const tranArr = tran
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .map((t, i) => {
+      return { info: t.info, amount: t.amount };
+    });
   const MyDoc = (
     <Document>
       <Page size="A4" style={styles.page}>
         <Text
           style={styles.title}
         >{`Report for ${dates[0].toDateString()} to ${dates[1].toDateString()}`}</Text>
+        <Text style={styles.title}>{`Summary`}</Text>
         <View style={styles.sec}>
           <View style={styles.section}>
             <Text style={styles.smallTitle}>Category</Text>
@@ -86,6 +96,27 @@ const ViewReport = ({ setEmailConf, dates }) => {
             {reportArr.map((el, i) => (
               <Text style={styles.text} key={i}>
                 {el.total}
+              </Text>
+            ))}
+          </View>
+        </View>
+        <Text style={styles.title}>{`Transactions`}</Text>
+        <View style={styles.sec}>
+          <View style={styles.section}>
+            <Text style={styles.smallTitle}>Info</Text>
+
+            {tranArr.map((el, i) => (
+              <Text style={styles.text} key={i}>
+                {el.info}
+              </Text>
+            ))}
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.smallTitle}>$Amount</Text>
+            {tranArr.map((el, i) => (
+              <Text style={styles.text} key={i}>
+                {`$${el.amount}`}
               </Text>
             ))}
           </View>

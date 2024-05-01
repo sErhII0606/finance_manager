@@ -6,6 +6,7 @@ import { getYear } from "rsuite/esm/utils/dateUtils";
 import { handleChange } from "../feachers/reports/reportSlice";
 import { getUserTransactionsReport } from "../feachers/transactions/tansactionsSlice";
 import { receiveReport } from "../feachers/user/userSlice";
+import { toast } from "react-toastify";
 
 const DateNavbar = ({ setDates, dates, setEmailConf }) => {
   const dispatcher = useDispatch();
@@ -46,39 +47,32 @@ const DateNavbar = ({ setDates, dates, setEmailConf }) => {
           <Nav.Item
             key={i}
             onClick={() => {
+              if (
+                new Date().getMonth() < i ||
+                new Date().getFullYear() < year
+              ) {
+                return;
+              }
               dispatcher(handleChange({ name: "month", value: i }));
               dispatcher(handleChange({ name: "date", value: 1 }));
+              setDates([
+                new Date(Date.UTC(year, i, 1, 6, 0, 0)),
+                new Date(Date.UTC(year, i + 1, 1, 6, 0, 0)),
+              ]);
+              dispatcher(
+                getUserTransactionsReport({
+                  userId: user.userId,
+                  month: i,
+                  year,
+                })
+              );
             }}
           >
             <Nav.Link>{m}</Nav.Link>
           </Nav.Item>
         );
       })}
-      <Nav.Item key={months.length + 1}>
-        <button
-          type="button"
-          disabled={isLoading}
-          onClick={() => {
-            /*   console.log(
-              year,
-              month,
-              date,
-              `dateEnd:${new Date(
-                Date.UTC(year, month + 1, date, 6, 0, 0)
-              )}, dateStart:${new Date(Date.UTC(year, month, date, 6, 0, 0))}`
-            ); */
-            setDates([
-              new Date(Date.UTC(year, month, date, 6, 0, 0)),
-              new Date(Date.UTC(year, month + 1, date, 6, 0, 0)),
-            ]);
-            dispatcher(
-              getUserTransactionsReport({ userId: user.userId, month, year })
-            );
-          }}
-        >
-          Show Report
-        </button>
-      </Nav.Item>
+
       <Nav.Item key={months.length + 2}>
         <button
           type="button"

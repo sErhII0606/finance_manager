@@ -273,6 +273,10 @@ const userSlice = createSlice({
       })
       .addCase(logout.rejected, (state, { payload }) => {
         state.isLoading = false;
+        state.user = null;
+        removeDataFromLocalStorage("user");
+        removeDataFromLocalStorage("cards");
+
         toast.error(payload);
       })
       .addCase(clearStore.rejected, () => {
